@@ -31,7 +31,7 @@ public class PizzaServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.println("Hello woooorld");
+		out.println("Hello woooorld som ar piiip");
 	}
 
 	/**
