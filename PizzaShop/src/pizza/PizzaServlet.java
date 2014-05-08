@@ -50,7 +50,7 @@ public class PizzaServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/PizzaShop","root","root");
+			java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
 			Statement st= con.createStatement(); 
 			ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'"); 
 			if(rs.next()){
