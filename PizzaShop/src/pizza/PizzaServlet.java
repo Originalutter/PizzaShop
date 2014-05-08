@@ -46,26 +46,46 @@ public class PizzaServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
-			Statement st= con.createStatement(); 
-			ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'"); 
-			if(rs.next()){
-				out.println("LOGIN SUCCESFULL!");
-			} else {
-				out.println("<h2>WRONG USERNAME/PASSWORD, TRY AGAIN!</h2>");
-				out.print("<h3><a href='login.jsp'>Back</a></h3>");
-			}
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("START STACKTRACE");
-			e.printStackTrace();
-		} 
-		
+		String action = request.getParameter("action");
+		if(action.equals("login")){			
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+				Statement st= con.createStatement(); 
+				ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'"); 
+				if(rs.next()){
+					out.println("LOGIN SUCCESFUL!");
+				} else {
+					out.println("<h2>WRONG USERNAME/PASSWORD, TRY AGAIN!</h2>");
+					out.print("<h3><a href='login.jsp'>Back</a></h3>");
+				}
+				
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("START STACKTRACE");
+				e.printStackTrace();
+			} 
+		} else if(action.equals("register")){
+			String username = request.getParameter("username");
+			String password = request.getParameter("password");
+			String email = request.getParameter("email");
+			String address = request.getParameter("address");
+			try {
+				Class.forName("com.mysql.jdbc.Driver");
+				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+				Statement st= con.createStatement();
+				st.executeUpdate("INSERT INTO users VALUES('"+username+"','"+password+"','"+email+"','"+address+"')");
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				System.out.println("START STACKTRACE");
+				e.printStackTrace();
+			} 
+			out.println("REGISTRATION SUCCESSFUL!");
+		} else {
+			out.println("ERROR: ooops, something went wrong!");
+		}
 	}
 
 }
