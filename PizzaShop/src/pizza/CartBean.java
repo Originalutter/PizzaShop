@@ -14,6 +14,8 @@ public class CartBean {
 		return price;
 	}
 	
+	
+	
 	public ArrayList<Pizza> inStock(){
 		ArrayList<Pizza> pizzasNotInStock = new ArrayList<Pizza>();
 		
@@ -30,13 +32,5 @@ public class CartBean {
 		System.out.println("ADDING: " + pizzaName);
 		Pizza p = new Pizza(pizzaName);
 		cart.add(p);
-	}
-	
-	public void addPizza() throws Exception{
-		addPizza("veszuvio");
-	}
-	
-	public String getContent(){
-		return "Testcontent";
 	}
 }

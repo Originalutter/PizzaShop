@@ -28,5 +28,6 @@
 </c:forTokens>
 </table>
 <jsp:getProperty property="price" name="cartBean"/>
+<jsp:getProperty property="pizza" name="cartBean"/>
 </body>
 </html>
