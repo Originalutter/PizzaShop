@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.sql.*"%>
+    pageEncoding="ISO-8859-1" import="java.sql.*" import="pizza.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,23 +9,25 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<jsp:useBean id="cartBean" class="pizza.CartBean" scope="application">
+</jsp:useBean>
 <table>
-<% 
-Class.forName("com.mysql.jdbc.Driver");
-java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
-Statement st= con.createStatement(); 
-ResultSet rs=st.executeQuery("SELECT distinct(name) FROM pizzas"); 
-while(rs.next()){
-	out.print(
-			"<tr>" +
-				"<td>" +
-					rs.getString(1) +
-				"</td>" +
-				"<td>" +
-					"<div class='plus' value='" + rs.getString(1) + "'><b>+</b></div>" +
-			"</tr>");
-}
-%>
+<c:forTokens items="${sessionScope.pizzas}" delims="," var="pizza">
+	 <tr>
+	 	<td>
+	 		<c:out value="${pizza}"/>
+ 		</td>
+ 		<td>
+ 			<form action="PizzaShop" method="post">
+ 				<input type=submit value="+"/>
+				<input type=hidden name="action" value="addpizza"/>
+				<input type=hidden name="pizza" value="${pizza}"/>
+			</form>
+ 		</td>
+ 	</tr>
+</c:forTokens>
 </table>
+<jsp:getProperty property="price" name="cartBean"/>
+<jsp:getProperty property="pizza" name="cartBean"/>
 </body>
 </html>
