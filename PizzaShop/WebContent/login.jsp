@@ -4,7 +4,6 @@
 <html>
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js" ></script>
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.12.0/jquery.validate.min.js" ></script>
 <script>
 	$( document ).ready(function() {
 	  // Handler for .ready() called.
@@ -105,8 +104,5 @@
 		  	</fieldset>
 		</form>
 	</center>
-<script>
-// $("#registerForm").validate();
-</script>
 </body>
 </html>

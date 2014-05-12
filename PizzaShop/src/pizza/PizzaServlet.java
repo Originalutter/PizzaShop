@@ -27,14 +27,12 @@ public class PizzaServlet extends HttpServlet {
      */
     public PizzaServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
 		rd.forward(request, response);
 	}
@@ -43,7 +41,6 @@ public class PizzaServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String action = request.getParameter("action");
@@ -63,7 +60,6 @@ public class PizzaServlet extends HttpServlet {
 				}
 				
 			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
 				System.out.println("START STACKTRACE");
 				e.printStackTrace();
 			} 
@@ -78,11 +74,11 @@ public class PizzaServlet extends HttpServlet {
 				Statement st= con.createStatement();
 				st.executeUpdate("INSERT INTO users VALUES('"+username+"','"+password+"','"+email+"','"+address+"')");
 			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
 				System.out.println("START STACKTRACE");
 				e.printStackTrace();
 			} 
 			out.println("REGISTRATION SUCCESSFUL!");
+			out.print("<h3><a href='login.jsp'>Back</a></h3>");
 		} else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
