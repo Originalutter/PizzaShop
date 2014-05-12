@@ -36,7 +36,7 @@ public class PizzaServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("username");
 		PrintWriter out = response.getWriter();
 		if(username!=null){
-			out.println("Du äro redan inloggad herrn!");
+			out.println("Du aro redan inloggad herrn!");
 		}
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
@@ -62,6 +62,7 @@ public class PizzaServlet extends HttpServlet {
 				if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
 					request.getSession().setAttribute("username",username);
+					UserBean user = new UserBean(username);
 				} else {
 					out.println("<h2>WRONG USERNAME/PASSWORD, TRY AGAIN!</h2>");
 					out.print("<h3><a href='login.jsp'>Back</a></h3>");
@@ -87,7 +88,11 @@ public class PizzaServlet extends HttpServlet {
 			} 
 			out.println("REGISTRATION SUCCESSFUL!");
 			out.print("<h3><a href='login.jsp'>Back</a></h3>");
-		} else {
+		} else if(action.equals("update")){
+			
+			
+		}
+			else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
 	}
