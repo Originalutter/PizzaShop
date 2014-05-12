@@ -9,6 +9,9 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<div style="float:right">
+<input type=submit value="Logout" onclick="window.location.href='logout.jsp'"/>
+</div>
 <table>
 <c:forTokens items="${sessionScope.ingredients}" delims="," var="ingredient">
 	 <tr>
