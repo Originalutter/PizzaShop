@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CartBean {
 	
-	private Pizza[] cart;
+	private ArrayList<Pizza> cart = new ArrayList<Pizza>();
 	
 	public int getPrice() {
 		int price = 0;
@@ -14,7 +14,7 @@ public class CartBean {
 		return price;
 	}
 	
-	public Pizza[] inStock(){
+	public ArrayList<Pizza> inStock(){
 		ArrayList<Pizza> pizzasNotInStock = new ArrayList<Pizza>();
 		
 		for (Pizza p: cart) {
@@ -23,6 +23,11 @@ public class CartBean {
 			}
 		}
 
-		return (Pizza[]) pizzasNotInStock.toArray();
+		return pizzasNotInStock;
+	}
+	
+	public void addPizza(String pizzaName) throws Exception{
+		Pizza p = new Pizza(pizzaName);
+		cart.add(p);
 	}
 }
