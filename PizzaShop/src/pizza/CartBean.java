@@ -27,7 +27,16 @@ public class CartBean {
 	}
 	
 	public void addPizza(String pizzaName) throws Exception{
+		System.out.println("ADDING: " + pizzaName);
 		Pizza p = new Pizza(pizzaName);
 		cart.add(p);
+	}
+	
+	public void addPizza() throws Exception{
+		addPizza("veszuvio");
+	}
+	
+	public String getContent(){
+		return "Testcontent";
 	}
 }

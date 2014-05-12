@@ -37,6 +37,7 @@ public class PizzaServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		if(username!=null){
 			out.println("Du äro redan inloggad herrn!");
+			request.getRequestDispatcher("shop.jsp").forward(request, response);
 		}
 		else {
 			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
@@ -62,6 +63,14 @@ public class PizzaServlet extends HttpServlet {
 				if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
 					request.getSession().setAttribute("username",username);
+					rs = st.executeQuery("SELECT distinct(name) FROM pizzas");
+					String pizzas = "";
+					while(rs.next()){
+						pizzas = pizzas+","+rs.getString(1);
+					}
+					pizzas = pizzas.substring(1);
+					request.getSession().setAttribute("pizzas",pizzas);
+					request.getRequestDispatcher("shop.jsp").forward(request, response);
 				} else {
 					out.println("<h2>WRONG USERNAME/PASSWORD, TRY AGAIN!</h2>");
 					out.print("<h3><a href='login.jsp'>Back</a></h3>");
@@ -87,6 +96,19 @@ public class PizzaServlet extends HttpServlet {
 			} 
 			out.println("REGISTRATION SUCCESSFUL!");
 			out.print("<h3><a href='login.jsp'>Back</a></h3>");
+		} else if(action.equals("addpizza")){
+			CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
+			if(cb==null){
+				cb = new CartBean();
+			}
+			try {
+				cb.addPizza((String) request.getParameter("pizza"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("cartBean",cb);
+			request.getRequestDispatcher("shop.jsp").forward(request, response);
 		} else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
