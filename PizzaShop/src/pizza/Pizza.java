@@ -96,4 +96,42 @@ public class Pizza {
 		}
 		return inStock;
 	}
+	public void composeNewPizza(String name, ArrayList<String> ingredients) throws Exception{
+		Connection conn =null;
+        Statement stmt = null;
+        ResultSet rs=null;
+ 
+        try{
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+            
+            for (String s: ingredients) {
+                stmt = conn.createStatement();
+                String sql;
+                sql ="INSERT INTO pizzas (name,ingredient) VALUES ('"
+                		+ name + "','" + s + "')";
+                rs= stmt.executeQuery(sql);
+            }
+            
+            
+            
+        }   
+        catch (SQLException sqle) {
+			throw new Exception(sqle);
+		} finally {
+			try {
+				rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				stmt.close();
+			} catch (Exception e) {
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 }
