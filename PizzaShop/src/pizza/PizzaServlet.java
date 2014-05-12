@@ -56,6 +56,7 @@ public class PizzaServlet extends HttpServlet {
 		if(action.equals("login")){			
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
+			
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
