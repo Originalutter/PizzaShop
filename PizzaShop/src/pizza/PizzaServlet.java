@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,7 +37,7 @@ public class PizzaServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("username");
 		PrintWriter out = response.getWriter();
 		if(username!=null){
-			out.println("Du äro redan inloggad herrn!");
+			out.println("Du ar redan inloggad herrn!");
 			request.getRequestDispatcher("shop.jsp").forward(request, response);
 		}
 		else {
@@ -58,9 +59,22 @@ public class PizzaServlet extends HttpServlet {
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
 				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
-				Statement st= con.createStatement(); 
-				ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'"); 
-				if(rs.next()){
+				Statement st= con.createStatement();
+				ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'");
+				if(username.equals("admin")) {
+					if(rs.next()) {
+						out.println("ADMIN LOGIN SUCCESFUL!");
+						request.getSession().setAttribute("username",username);
+						rs = st.executeQuery("SELECT distinct(name) FROM ingredients");
+						String ingredients = "";
+						while(rs.next()){
+							ingredients = ingredients+","+rs.getString(1);
+						}
+						ingredients = ingredients.substring(1);
+						request.getSession().setAttribute("ingredients",ingredients);
+						request.getRequestDispatcher("admin.jsp").forward(request, response);
+					}
+				}else if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
 					request.getSession().setAttribute("username",username);
 					rs = st.executeQuery("SELECT distinct(name) FROM pizzas");
@@ -109,7 +123,63 @@ public class PizzaServlet extends HttpServlet {
 			}
 			request.getSession().setAttribute("cartBean",cb);
 			request.getRequestDispatcher("shop.jsp").forward(request, response);
-		} else {
+		} else if(action.equals("increaseStock")){
+			try {
+				Ingredient i = new Ingredient(request.getParameter("ingredient"));
+				i.increaseStock(Integer.parseInt(request.getParameter("increase")));
+
+				Class.forName("com.mysql.jdbc.Driver");
+				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+				Statement st= con.createStatement();
+				ResultSet rs = st.executeQuery("SELECT distinct(name) FROM ingredients");
+				String ingredients = "";
+				while(rs.next()){
+					ingredients = ingredients+","+rs.getString(1);
+				}
+				ingredients = ingredients.substring(1);
+				request.getSession().setAttribute("ingredients",ingredients);
+				request.getRequestDispatcher("admin.jsp").forward(request, response);
+			} catch (Exception e) {
+				out.println("ERROR: ooops, something went wrong!");
+			}
+		} else if(action.equals("composeNewPizza")){
+			try {
+				ArrayList<String> newIngredients = new ArrayList<String>();
+				if (!request.getParameter("ingredient1").equals("")) {
+					newIngredients.add(request.getParameter("ingredient1"));
+				}
+				if (!request.getParameter("ingredient2").equals("")) {
+					newIngredients.add(request.getParameter("ingredient2"));
+				}
+				if (!request.getParameter("ingredient3").equals("")) {
+					newIngredients.add(request.getParameter("ingredient3"));
+				}
+				if (!request.getParameter("ingredient4").equals("")) {
+					newIngredients.add(request.getParameter("ingredient4"));
+				}
+				if (!request.getParameter("ingredient5").equals("")) {
+					newIngredients.add(request.getParameter("ingredient5"));
+				}
+				Pizza p = new Pizza();
+				p.composeNewPizza(request.getParameter("name"), newIngredients);
+				
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+				Statement st= con.createStatement();
+				ResultSet rs = st.executeQuery("SELECT distinct(name) FROM ingredients");
+				String ingredients = "";
+				while(rs.next()){
+					ingredients = ingredients+","+rs.getString(1);
+				}
+				ingredients = ingredients.substring(1);
+				request.getSession().setAttribute("ingredients",ingredients);
+				request.getRequestDispatcher("admin.jsp").forward(request, response);
+			} catch (Exception e) {
+				out.println("ERROR: ooops, something went wrong!");
+			}
+		}
+		else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
 	}

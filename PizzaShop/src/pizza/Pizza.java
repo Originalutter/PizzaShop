@@ -12,6 +12,10 @@ public class Pizza {
 	private ArrayList<Ingredient> ingredients = new ArrayList<Ingredient>();
 	private String name;
 
+	public Pizza() {
+		this.name = "";
+	}
+	
 	public Pizza(String name) throws Exception{
 		Connection conn =null;
         Statement stmt = null;
@@ -99,7 +103,6 @@ public class Pizza {
 	public void composeNewPizza(String name, ArrayList<String> ingredients) throws Exception{
 		Connection conn =null;
         Statement stmt = null;
-        ResultSet rs=null;
  
         try{
             
@@ -111,7 +114,7 @@ public class Pizza {
                 String sql;
                 sql ="INSERT INTO pizzas (name,ingredient) VALUES ('"
                 		+ name + "','" + s + "')";
-                rs= stmt.executeQuery(sql);
+                stmt.executeUpdate(sql);
             }
             
             
@@ -120,10 +123,6 @@ public class Pizza {
         catch (SQLException sqle) {
 			throw new Exception(sqle);
 		} finally {
-			try {
-				rs.close();
-			} catch (Exception e) {
-			}
 			try {
 				stmt.close();
 			} catch (Exception e) {

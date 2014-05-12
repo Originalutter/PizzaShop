@@ -1,16 +1,21 @@
 package pizza;
 
+import java.util.ArrayList;
+
 public class UnitTest {
 
 	public static void main(String[] args) {
-		CartBean cart = new CartBean();
+		System.out.println("start");
 		try {
-			cart.addPizza("veszuvio");
+			ArrayList<String> is = new ArrayList<String>();
+			is.add("ham");
+			is.add("cheese");
+			Pizza p = new Pizza();
+			p.composeNewPizza("ny", is);
+			System.out.println("klar");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("FEL");
 		}
-		System.out.println(cart.getPrice());
 	}
 
 }
