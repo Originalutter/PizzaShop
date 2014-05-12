@@ -134,7 +134,6 @@ public class Ingredient {
 	public void increaseStock(int increase) throws Exception{
 		Connection conn =null;
         Statement stmt = null;
-        ResultSet rs=null;
  
         try{
             
@@ -145,15 +144,11 @@ public class Ingredient {
             String sql;
             sql ="UPDATE ingredients SET instock = instock +" + increase +
             		" WHERE name=" + "'" + this.name + "'";
-            rs= stmt.executeQuery(sql);
+            stmt.executeUpdate(sql);
         }   
         catch (SQLException sqle) {
 			throw new Exception(sqle);
 		} finally {
-			try {
-				rs.close();
-			} catch (Exception e) {
-			}
 			try {
 				stmt.close();
 			} catch (Exception e) {
