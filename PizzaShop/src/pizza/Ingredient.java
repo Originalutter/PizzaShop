@@ -96,4 +96,72 @@ public class Ingredient {
 		}
         return inStock;
 	}
+	
+	public void orderNewIngredient(String name, int price, int inStock) throws Exception {
+		Connection conn =null;
+        Statement stmt = null;
+        ResultSet rs=null;
+ 
+        try{
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+            
+            stmt = conn.createStatement();
+            String sql;
+            sql ="INSERT INTO ingredients (name,price,instock) VALUES ('"
+            		+ name + "'," + price + "," + inStock + ")";
+            rs= stmt.executeQuery(sql);
+        }   
+        catch (SQLException sqle) {
+			throw new Exception(sqle);
+		} finally {
+			try {
+				rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				stmt.close();
+			} catch (Exception e) {
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+	public void increaseStock(int increase) throws Exception{
+		Connection conn =null;
+        Statement stmt = null;
+        ResultSet rs=null;
+ 
+        try{
+            
+            Class.forName("com.mysql.jdbc.Driver");
+            conn=DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+            
+            stmt = conn.createStatement();
+            String sql;
+            sql ="UPDATE ingredients SET instock = instock +" + increase +
+            		" WHERE name=" + "'" + this.name + "'";
+            rs= stmt.executeQuery(sql);
+        }   
+        catch (SQLException sqle) {
+			throw new Exception(sqle);
+		} finally {
+			try {
+				rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				stmt.close();
+			} catch (Exception e) {
+			}
+			try {
+				conn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
 }
