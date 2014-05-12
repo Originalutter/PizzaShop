@@ -33,8 +33,15 @@ public class PizzaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-		rd.forward(request, response);
+		String username = (String) request.getSession().getAttribute("username");
+		PrintWriter out = response.getWriter();
+		if(username!=null){
+			out.println("Du äro redan inloggad herrn!");
+		}
+		else {
+			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	/**
@@ -54,6 +61,7 @@ public class PizzaServlet extends HttpServlet {
 				ResultSet rs=st.executeQuery("SELECT * FROM users WHERE username='"+username+"' AND password='"+password+"'"); 
 				if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
+					request.getSession().setAttribute("username",username);
 				} else {
 					out.println("<h2>WRONG USERNAME/PASSWORD, TRY AGAIN!</h2>");
 					out.print("<h3><a href='login.jsp'>Back</a></h3>");
