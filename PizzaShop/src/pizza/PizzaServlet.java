@@ -64,7 +64,6 @@ public class PizzaServlet extends HttpServlet {
 				if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
 					request.getSession().setAttribute("username",username);
-					UserBean user = new UserBean(username);
 					rs = st.executeQuery("SELECT distinct(name) FROM pizzas");
 					String pizzas = "";
 					while(rs.next()){
