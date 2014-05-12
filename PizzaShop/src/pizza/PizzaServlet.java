@@ -37,7 +37,7 @@ public class PizzaServlet extends HttpServlet {
 		String username = (String) request.getSession().getAttribute("username");
 		PrintWriter out = response.getWriter();
 		if(username!=null){
-			out.println("Du ar redan inloggad herrn!");
+			out.println("Du aro redan inloggad herrn!");
 			request.getRequestDispatcher("shop.jsp").forward(request, response);
 		}
 		else {
@@ -111,6 +111,21 @@ public class PizzaServlet extends HttpServlet {
 			} 
 			out.println("REGISTRATION SUCCESSFUL!");
 			out.print("<h3><a href='login.jsp'>Back</a></h3>");
+		} else if(action.equals("addpizza")){
+			CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
+			if(cb==null){
+				cb = new CartBean();
+			}
+			try {
+				cb.addPizza((String) request.getParameter("pizza"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("cartBean",cb);
+			request.getRequestDispatcher("shop.jsp").forward(request, response);
+		} else if(action.equals("update")){
+			
 		} else if(action.equals("addpizza")){
 			CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
 			if(cb==null){
