@@ -19,6 +19,7 @@ if(request.getSession().getAttribute("inStock").equals("false")) {
 
 <div style="float:right">
 <input type=submit value="Logout" onclick="window.location.href='logout.jsp'"/>
+<input type=submit value="Profile" onclick="window.location.href='userUpdate.jsp'"/>
 </div>
 <jsp:useBean id="cartBean" class="pizza.CartBean" scope="application">
 </jsp:useBean>

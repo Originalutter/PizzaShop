@@ -8,7 +8,6 @@
 </head>
 <jsp:useBean id="userBean" class="pizza.UserBean" scope="application"></jsp:useBean>
 <body><h1>Update your profile by filling below fields</h1>
-	<i>$(sessionsScope.username)</i>
 		<center>
 			<form action="PizzaShop" method="post">
 				<table border="0" cellspacing="5" align="center">
