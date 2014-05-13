@@ -85,7 +85,7 @@ public class CartBean {
 		cart.add(p);
 	}
 	
-	public void submitPurchase() throws Exception{
+	public void submitPurchase(String user) throws Exception{
 		Connection conn =null;
         Statement stmt = null;
  
@@ -93,7 +93,10 @@ public class CartBean {
             Class.forName("com.mysql.jdbc.Driver");
             conn=DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
             
+            String pizzaString = "";
+            
             for (Pizza p: this.cart) {
+            	pizzaString += p.getName() + ",";
             	for (Ingredient i: p.getIngredients()) {
             		stmt = conn.createStatement();
                     String sql;
@@ -101,6 +104,10 @@ public class CartBean {
                     stmt.executeUpdate(sql);
             	}
             }
+            pizzaString = pizzaString.substring(0, pizzaString.length()-1);
+            String ordersql;
+            ordersql = "INSERT INTO orders (user,pizzas) VALUES ('" + user + "', '" + pizzaString + "')";
+            stmt.executeUpdate(ordersql);
         }   
         catch (SQLException sqle) {
 			throw new Exception(sqle);

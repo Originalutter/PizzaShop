@@ -234,7 +234,9 @@ public class PizzaServlet extends HttpServlet {
 				if(cb!=null){
 					try {
 						if (cb.inStock()) {
-							cb.submitPurchase();
+							UserBean user = (UserBean)request.getSession().getAttribute("userBean");
+							String userName = user.getName();
+							cb.submitPurchase(userName);
 							request.getSession().setAttribute("inStock", "true");
 						} else {
 							//TODO: vad hander om man en pizza inte finns i lager
