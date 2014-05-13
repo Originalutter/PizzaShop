@@ -6,7 +6,16 @@ public class Ingredient {
 
 	private int price;
 	private String name;
+	private int inStock;
 	
+	public int getInStock() {
+		return inStock;
+	}
+
+	public void setInStock(int inStock) {
+		this.inStock = inStock;
+	}
+
 	public Ingredient(String name) throws Exception{
 		Connection conn =null;
         Statement stmt = null;
@@ -25,6 +34,7 @@ public class Ingredient {
             rs.next();
             this.price = Integer.parseInt(rs.getString("price"));
             this.name = name;
+            this.inStock = Integer.parseInt(rs.getString("instock"));
         }   
         catch (SQLException sqle) {
 			throw new Exception(sqle);
