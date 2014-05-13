@@ -53,6 +53,7 @@ public class PizzaServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String action = request.getParameter("action");
+		request.getSession().setAttribute("inStock", null);
 		if(action.equals("login")){			
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
@@ -194,8 +195,25 @@ public class PizzaServlet extends HttpServlet {
 			} catch (Exception e) {
 				out.println("ERROR: ooops, something went wrong!");
 			}
-		}
-		else {
+		}else if(action.equals("submitPurchase")){
+				CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
+				if(cb!=null){
+					try {
+						if (cb.inStock()) {
+							cb.submitPurchase();
+							request.getSession().setAttribute("inStock", "true");
+						} else {
+							//TODO: vad hander om man en pizza inte finns i lager
+							request.getSession().setAttribute("inStock", "false");
+						}
+					} catch (Exception e) {
+						out.println("ERROR: ooops, something went wrong!");
+					}
+				}
+				CartBean cbNew = new CartBean();
+				request.getSession().setAttribute("cartBean",cbNew);
+				request.getRequestDispatcher("shop.jsp").forward(request, response);
+		} else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
 	}

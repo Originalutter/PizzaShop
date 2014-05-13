@@ -9,6 +9,14 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+<% if(request.getSession().getAttribute("inStock") != null) {
+if(request.getSession().getAttribute("inStock").equals("false")) {
+	out.println("<script>alert('One or more products are not in stock');</script>");
+} else if (request.getSession().getAttribute("inStock").equals("true")) {
+	out.println("<script>alert('Purchase completed!');</script>");	
+}
+}%>
+
 <div style="float:right">
 <input type=submit value="Logout" onclick="window.location.href='logout.jsp'"/>
 </div>
@@ -30,6 +38,13 @@
  	</tr>
 </c:forTokens>
 </table>
-<jsp:getProperty property="price" name="cartBean"/>
+<div>
+	Price: 
+	<jsp:getProperty property="price" name="cartBean"/>kr
+	<form action="PizzaShop" method="post">
+		<input type=hidden name="action" value="submitPurchase"/>
+		<input type=submit value="Submit purchase"/>
+	</form>
+</div>
 </body>
 </html>
