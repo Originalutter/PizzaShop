@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 <title>Insert title here</title>
 </head>
+<jsp:useBean id="userBean" class="pizza.UserBean" scope="application"></jsp:useBean>
 <body><h1>Update your profile by filling below fields</h1>
 	<i>$(sessionsScope.username)</i>
 		<center>
@@ -16,7 +17,7 @@
 							Username:
 						</td>
 						<td align="left">
-							<input type="text" name="username" required pattern=".{3,}" title="The username has to be at least 3 characters">
+							<input type="text" value='<jsp:getProperty property="name" name="userBean"/>' name="username" required pattern=".{3,}" title="The username has to be at least 3 characters">
 						</td>
 					</tr>
 					<tr>
@@ -24,7 +25,7 @@
 							E-mail:
 						</td>
 						<td align="left">
-							<input type="email" name="email" required>
+							<input type="email" value='<jsp:getProperty property="email" name="userBean"/>' name="email" required>
 						</td>
 					</tr>	
 					<tr>
@@ -32,16 +33,13 @@
 							Address:
 						</td>
 						<td align="left">
-							<input type="text" name="address" required>
+							<input type="text" value='<jsp:getProperty property="address" name="userBean"/>' name="address" required>
 						</td>
 					</tr>	
 					<tr>
-						<td>
-							<input id="loginBtn" type="button" value="Log in">
-						</td>
 						<td align="center">
 							<input type="hidden" name="action" value="update">
-							<input type="submit" value="Register">
+							<input type="submit" value="Update">
 						</td>
 					</tr>
 				</table>	

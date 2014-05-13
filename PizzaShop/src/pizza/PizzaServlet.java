@@ -53,6 +53,7 @@ public class PizzaServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String action = request.getParameter("action");
+		request.getSession().setAttribute("inStock", null);
 		if(action.equals("login")){			
 			String username = request.getParameter("username");
 			String password = request.getParameter("password");
@@ -77,7 +78,14 @@ public class PizzaServlet extends HttpServlet {
 					}
 				}else if(rs.next()){
 					out.println("LOGIN SUCCESFUL!");
-					request.getSession().setAttribute("username",username);
+					UserBean user = new UserBean();
+					
+					user.setName(rs.getString(1));
+					
+					user.setEmail(rs.getString(3));
+					user.setAddress(rs.getString(4));
+					
+					request.getSession().setAttribute("userBean",user);
 					rs = st.executeQuery("SELECT distinct(name) FROM pizzas");
 					String pizzas = "";
 					while(rs.next()){
@@ -125,6 +133,33 @@ public class PizzaServlet extends HttpServlet {
 			request.getSession().setAttribute("cartBean",cb);
 			request.getRequestDispatcher("shop.jsp").forward(request, response);
 		} else if(action.equals("update")){
+			UserBean user = (UserBean)request.getSession().getAttribute("userBean");
+			String oldUserName = user.getName();
+			user.setName((String)request.getParameter("username"));
+			
+		
+			
+			
+			
+				String sqlMessage;
+	 
+				sqlMessage = "UPDATE users SET username=" + "'" + user.getName();
+				sqlMessage += "', email=" + "'" + user.getEmail();
+				sqlMessage += "', address=" + "'" + user.getAddress();
+				sqlMessage += "' WHERE username=" + "'" + oldUserName + "'";
+				System.out.println(sqlMessage);
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					java.sql.Connection con = DriverManager.getConnection("jdbc:mysql://mysql12.citynetwork.se/108985-lmm","108985-mb29814","Larsa1952");
+					Statement st= con.createStatement();
+					st.executeUpdate(sqlMessage);
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+			
 			
 		} else if(action.equals("addpizza")){
 			CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
@@ -194,8 +229,25 @@ public class PizzaServlet extends HttpServlet {
 			} catch (Exception e) {
 				out.println("ERROR: ooops, something went wrong!");
 			}
-		}
-		else {
+		}else if(action.equals("submitPurchase")){
+				CartBean cb = (CartBean) request.getSession().getAttribute("cartBean");
+				if(cb!=null){
+					try {
+						if (cb.inStock()) {
+							cb.submitPurchase();
+							request.getSession().setAttribute("inStock", "true");
+						} else {
+							//TODO: vad hander om man en pizza inte finns i lager
+							request.getSession().setAttribute("inStock", "false");
+						}
+					} catch (Exception e) {
+						out.println("ERROR: ooops, something went wrong!");
+					}
+				}
+				CartBean cbNew = new CartBean();
+				request.getSession().setAttribute("cartBean",cbNew);
+				request.getRequestDispatcher("shop.jsp").forward(request, response);
+		} else {
 			out.println("ERROR: ooops, something went wrong!");
 		}
 	}

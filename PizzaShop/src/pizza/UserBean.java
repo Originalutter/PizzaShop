@@ -1,9 +1,8 @@
 package pizza;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+
+
 
 public class UserBean {
 
@@ -12,9 +11,9 @@ public class UserBean {
 	private String email;
 	private String address;
 	
-	public UserBean(String name)
+	public UserBean()
 	{
-		this.name = name;
+	
 	}
 	public String getAddress() {
 		return address;
@@ -23,9 +22,11 @@ public class UserBean {
 		this.address = address;
 	}
 	public String getName() {
-		return name;
+				return name;
 	}
 	public void setName(String name) {
+		System.out.println(name);
+
 		this.name = name;
 	}
 	public boolean isAdmin() {
